@@ -60,7 +60,6 @@ def json_reader(filename):
 def json_cracker(json_data, json_text):
     # Loop through the file
     for i in json_data:
-        print i
         # If it's something we can use in the search function, keep and return
         if type(i) == "str" or type(i) == "int":
             json_text += json_data
@@ -130,14 +129,14 @@ def search(query, directory):
         mkpath(folder)
         for file in matches:
             copy(file, folder)
-        print "\nSearch item found! Folder created!"
+        print ("\nSearch item found! Folder created!")
     # No?
     else:
-        print "Sorry, we couldn't find it!"
+        print ("Sorry, we couldn't find it!")
 
 
 # Welcome message
-print """Please enter your search criteria after the prompt! You will
+print ("""Please enter your search criteria after the prompt! You will
 receive a new folder with every file containing your search item(s) in a given
 folder! This new folder will be named after your search criteria.
 
@@ -146,7 +145,7 @@ together, please format your search "Drury && Lane". Failure to do so will earn
 you a folder containing every instance of Drury and every instance of Lane!)
 - AH
 
-"""
+""")
 continuity = True
 
 while continuity:
@@ -157,6 +156,6 @@ while continuity:
     you wish to access (i.e. ~/Downloads/Test): """)
     # Actually running the function
     search(query, directory)
-    continuity_check = raw_input("\nWould you like to search again? Y/N: ")
+    continuity_check = input("\nWould you like to search again? Y/N: ")
     while continuity_check.upper() != "Y" or continuity_check.upper() != "N":
         continuity = check_continuity(continuity_check)
