@@ -74,7 +74,7 @@ def check_continuity(continuity_check):
             return True
         elif continuity_check == "N" or "n":
             return False
-        return raw_input("\nSorry, I don't understand. Please answer Y or N: ")
+        return input("\nSorry, I don't understand. Please answer Y or N: ")
 
 
 # Creating the main function - takes in the word(s) to be found and the folder
@@ -153,9 +153,11 @@ while continuity:
     query = input("What do you want to search for?: ")
     # Getting the directory
     directory = input("""Please provide the absolute path for the folder
-    you wish to access (i.e. ~/Downloads/Test): """)
+you wish to access (i.e. ~/Downloads/Test): """)
     # Actually running the function
     search(query, directory)
     continuity_check = input("\nWould you like to search again? Y/N: ")
-    while continuity_check.upper() != "Y" or continuity_check.upper() != "N":
-        continuity = check_continuity(continuity_check)
+    if continuity_check == "N" or continuity_check == "n":
+        continuity = False
+    elif continuity_check != "Y" and continuity_check != "y":
+        continuity = False
