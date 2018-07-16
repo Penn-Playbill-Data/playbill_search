@@ -108,29 +108,27 @@ def search(query, directory):
         print ("Sorry, we couldn't find it!")
 
 
-# Welcome message
-print ("""Please enter your search criteria after the prompt! You will
-receive a new folder with every file containing your search item(s) in a given
-folder! This new folder will be named after your search criteria.
+def main():
+    # Welcome message
+    print ("""Please enter your search criteria after the prompt! You will
+receive a new folder with every file containing your search item(s) in a
+given folder! This new folder will be named after your search criteria.
 
 (Note: If you want to search "Drury Lane" and ONLY get instances of the two
 together, please format your search "Drury && Lane". Failure to do so will earn
 you a folder containing every instance of Drury and every instance of Lane!)
+
 - AH
+    """)
 
-""")
-continuity = True
-
-while continuity:
     # Getting the Key
     query = input("What do you want to search for?: ")
     # Getting the directory
-    directory = input("""Please provide the absolute path for the folder
-you wish to access (i.e. ~/Downloads/Test): """)
+    directory = input("""Please provide the absolute path for the folder you
+ wish to access (i.e. ~/Downloads/Test): """)
     # Actually running the function
     search(query, directory)
-    continuity_check = input("\nWould you like to search again? Y/N: ")
-    if continuity_check == "N" or continuity_check == "n":
-        continuity = False
-    elif continuity_check != "Y" and continuity_check != "y":
-        continuity = False
+
+
+if __name__ == "__main__":
+    main()
