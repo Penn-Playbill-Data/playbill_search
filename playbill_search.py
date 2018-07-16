@@ -1,5 +1,3 @@
-# Add in search folder of folder
-# Add Regex
 # Search Program
 #
 # By Anastasia Hutnick
@@ -13,10 +11,8 @@
 # Import os, copy, and mkpath for folder / file reading and writing magic.
 import os
 from shutil import copy
+import re
 from distutils.dir_util import mkpath
-# Import json so we can access the json files.
-# import json
-# Import datetime
 from datetime import datetime
 
 
@@ -25,11 +21,11 @@ from datetime import datetime
 def key_check(key, text):
     if len(key) > 1:
         for item in key:
-            if item in text:
+            if re.search(item, text):
                 return True
         return False
     else:
-        if key[0] in text:
+        if re.search(key[0], text):
             return True
         return False
 
@@ -41,42 +37,19 @@ def split(query):
     # If only one word, just put that word into an array
     query = query.lower()
     if query.isalpha():
+        query = re.compile(query)
         return [query]
     elif "&&" in query:
         literal = query.split()
         literal.remove("&&")
-        return [" ".join(literal)]
+        query = re.compile(" ".join(literal))
+        return [query]
     # If multiple words, split each word up in an array
     else:
-        return query.split()
-
-
-# Read a json file
-# def json_reader(filename):
-    # if filename.endswith(".json"):
-        # json_text = filename.read()
-        # return json.loads(json_text)
-
-
-# Crack the json file - isolate the text
-# def json_cracker(json_data, json_text):
-    # Loop through the file
-    # for i in json_data:
-        # If it's something we can use in the search function, keep and return
-        # if type(i) == "str" or type(i) == "int":
-        #   json_text += json_data
-        #   return json_text
-        # Otherwise, continue recursively searching through the file!
-        # elif type(i) == "list" or type(i) == "dict":
-        #   return json_cracker(i, json_text)
-
-
-def check_continuity(continuity_check):
-        if continuity_check == "Y" or "y":
-            return True
-        elif continuity_check == "N" or "n":
-            return False
-        return input("\nSorry, I don't understand. Please answer Y or N: ")
+        query = query.split()
+        for item in query:
+            item = re.compile(item)
+        return query
 
 
 def file_reader(path, files):
@@ -105,23 +78,15 @@ def search(query, directory):
 
     # Cracking open the folder
     for filename in files:
-        count = 0
         # Did we find the word / words? - Set variable that checks.
         # Opening the file
         with open(filename, "r", encoding="utf-8") as my_file:
             # Loop through each line
-            # if filetypes[count] == 1:
             for i, line in enumerate(my_file):
                 # Splitting up the line into words, saving to an array
                 line_text = line.lower()
                 if key_check(key, line_text):
                     matches.append(filename)
-            # elif filetypes[count] == 2:
-                # json_data = json_reader(my_file)
-                # json_text = json_cracker(json_data, "")
-                # if key_check(key, json_text):
-                    # matches.append(filename)
-            count += 1
 
     # Did we get any files? Let's check before we make a folder!
     # Yes?
@@ -130,7 +95,10 @@ def search(query, directory):
         # Does this folder already exist? If so, add the current date/time
         # to provide a unique / helpful new name
         if os.path.isdir(folder):
-            folder = folder + str(datetime.now())
+            now = datetime.now()
+            n = '%002d/%002d/%004d %02d:%02d:%02d' % (
+                now.month, now.day, now.year, now.hour, now.minute, now.second)
+            folder = folder + n
         mkpath(folder)
         for file in matches:
             copy(file, folder)
