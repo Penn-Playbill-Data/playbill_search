@@ -62,6 +62,24 @@ def file_reader(path, files):
     return files
 
 
+def get_date():
+    now = datetime.now()
+    return '%002d-%002d-%004d_%02d-%02d-%02d' % (
+        now.month, now.day, now.year, now.hour, now.minute, now.second)
+
+
+def make_folder(matches, path, query):
+    folder = path + "/" + query
+    # Does this folder already exist? If so, add the current date/time
+    # to provide a unique / helpful new name
+    if os.path.isdir(folder):
+        folder = folder + get_date()
+    mkpath(folder)
+    for file in matches:
+        copy(file, folder)
+    return folder
+
+
 # Creating the main function - takes in the word(s) to be found and the folder
 # path
 def search(query, directory):
@@ -91,21 +109,13 @@ def search(query, directory):
     # Did we get any files? Let's check before we make a folder!
     # Yes?
     if len(matches) > 0:
-        folder = path + "/" + query
-        # Does this folder already exist? If so, add the current date/time
-        # to provide a unique / helpful new name
-        if os.path.isdir(folder):
-            now = datetime.now()
-            n = '%002d/%002d/%004d %02d:%02d:%02d' % (
-                now.month, now.day, now.year, now.hour, now.minute, now.second)
-            folder = folder + n
-        mkpath(folder)
-        for file in matches:
-            copy(file, folder)
+        folder = make_folder(matches, path, query)
         print ("\nSearch item found! Folder created!")
+        return folder
     # No?
     else:
         print ("Sorry, we couldn't find it!")
+        return None
 
 
 def main():
@@ -127,7 +137,7 @@ you a folder containing every instance of Drury and every instance of Lane!)
     directory = input("""Please provide the absolute path for the folder you
  wish to access (i.e. ~/Downloads/Test): """)
     # Actually running the function
-    search(query, directory)
+    return search(query, directory)
 
 
 if __name__ == "__main__":
