@@ -9,6 +9,7 @@ import re
 
 class LocationMatrix(object):
     def __init__(self, file):
+        self.file = file
         # Text, parsed into lines
         self.text = self.file_opener(file)
         # Lines parsed into words
@@ -86,6 +87,9 @@ class LocationMatrix(object):
         self.update_matrix()
         sym = self.get_index("\\^")
         return sym[0]
+
+    def get_file(self):
+        return self.file
 
     def get_index(self, pattern):
         key = []

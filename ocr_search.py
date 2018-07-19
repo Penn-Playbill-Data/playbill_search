@@ -49,6 +49,8 @@ def word_windows_start(matrix):
         n = int(input("Please enter the number of words to search before\
 /after the anchor term: "))
         master = word_windows(anchor, context, n, matrix)
+        master[0].append(matrix.get_file())
+        master = csv_results("Word", master)
         return master
     else:
         return False
@@ -89,6 +91,8 @@ def char_windows_start(matrix):
         n = int(input("Please enter the number of characters to search before\
 /after the anchor term: "))
         master = character_windows(anchor, context, n, matrix)
+        master[0].append(matrix.get_file())
+        master = csv_results("Character", master)
         return master
     else:
         return False
@@ -138,6 +142,8 @@ def line_windows_start(matrix):
         n = int(input("Please enter the number of lines to test before and\
  after anchor: "))
         master = line_windows(anchor, context, n, matrix)
+        master[0].append(matrix.get_file())
+        master = csv_results("Line", master)
         return master
     else:
         return False
@@ -176,6 +182,8 @@ def playbill_windows_start(matrix):
         anchor = input("Please enter anchor term: ")
         context = input("Please enter context term: ")
         master = playbill_windows(anchor, context, matrix)
+        master[0].append(matrix.get_file())
+        master = csv_results("Playbill", master)
         return master
     else:
         return False
@@ -220,6 +228,8 @@ to use the anchor word as an index): ")
         percent = float(input("Please enter what percentage of the playbill\
  you would like to search: "))
         master = location_search(anchor, context, index, percent, matrix)
+        master[0].append(matrix.get_file())
+        master = csv_results("Location", master)
         return master
     else:
         return False
@@ -283,30 +293,56 @@ def location_search(anchor, context, index, percent, matrix):
     return master_results
 
 
-# Print the results in an orderly fashion. Takes in which test, and the results
-def print_results(test, master):
+def csv_results(test, master):
     search = master[0]
     lines = master[1]
-    results = ""
-    str = ""
+    results = []
+    line = [" "] * 11
     for i in range(2, len(master)):
-        str += "{} {} Results:\n".format(test, i - 1)
-        str += "   File: {}\n".format(search[len(search) - 1])
-        str += "\tBefore:   {}\n".format(master[i][0])
-        str += "\tAfter:    {}\n".format(master[i][1])
-        str += "\tTogether: {}\n".format(master[i][2])
-        str += "\t\tAnchor:      {}\n".format(search[0])
-        str += "\t\tContext:     {}\n".format(search[1])
+        line[0] = test
+        line[1] = search[len(search) - 1]
+        line[2] = master[i][0]
+        line[3] = master[i][1]
+        line[4] = master[i][2]
+        line[5] = search[0]
+        line[6] = search[1]
         if len(search) == 4:
-            str += "\t\tWindow Size: {}\n".format(search[2])
-        if len(search) == 5:
-            str += "\t\tStarting Index: {}\n".format(search[2])
-            str += "\t\tPercent Taken:  {}\n".format(search[3])
-        str += (lines[i - 2] + "\n\n")
-        if __name__ == "__main__":
-            print (str)
-        results += str
+            line[7] = search[2]
+        elif len(search) == 5:
+            line[8] = search[2]
+            line[9] = search[3]
+        line[10] = lines[i - 2]
+        results += line
     return results
+
+
+# Print the results in an orderly fashion. Takes in which test, and the results
+def format_results(master):
+    str = ""
+    results = ""
+    str += "{} Results:\n".format(master[0])
+    str += "File: {}\n".format(master[1])
+    str += "\tBefore:   {}\n".format(master[2])
+    str += "\tAfter:    {}\n".format(master[3])
+    str += "\tTogether: {}\n".format(master[4])
+    str += "\t\tAnchor:         {}\n".format(master[5])
+    str += "\t\tContext:        {}\n".format(master[6])
+    if master[0] == "Location":
+        str += "\t\tStarting Index: {}\n".format(master[8])
+        str += "\t\tPercent Taken:  {}\n".format(master[9])
+    elif master[0] != "Playbill":
+        str += "\t\tWindow Size:    {}\n".format(master[7])
+    str += master[10] + "\n\n"
+    results += str
+    return results
+
+
+def print_results(master):
+    if type(master[0]) == list:
+        for i in master:
+            print(format_results(master))
+    else:
+        print(format_results(master))
 
 
 # Get the variables and run the tests!

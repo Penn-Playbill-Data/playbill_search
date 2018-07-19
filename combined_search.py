@@ -1,4 +1,6 @@
 import ocr_search_out
+import ocr_search
+import csv_dict_writer
 import playbill_search
 import glob
 import os
@@ -56,28 +58,23 @@ def parse(full):
     for i in full:
         if full[i] is not False:
             bools = get_test()
-            for j in full[i][1]:
-                if type(full[i][1][j][0]) == list:
+            file = ""
+            count = 0
+            for j in range(len(full[i])):
+                info = full[i][j]
+                if file != info[0]:
                     count = 0
-                    for k in full[i][1][j]:
-                        res = check_bools(bools[0], bools[1], k)
-                        cond = res[1]
-                        check = res[0]
-                        if check and j not in matches:
-                            if cond is True or count == 0:
-                                print(check, cond, count)
-                                matches.append(j)
-                        elif not check and j in matches and cond is False:
-                            matches.remove(j)
-                        count += 1
-                else:
-                    check = check_bools(bools[0], bools[1], k)
-                    cond = check[1]
-                    check = check[0]
-                    if check and j not in matches:
-                        matches.append(j)
-                    elif not check and j in matches and cond is False:
-                        matches.remove(j)
+                file = info[0]
+                loc = [info[2], info[3], info[4]]
+                res = check_bools(bools[0], bools[1], loc)
+                cond = res[1]
+                check = res[0]
+                if check and info[0] not in matches:
+                    if cond is True or count == 0:
+                        matches.append(info[0])
+                elif not check and info[0] in matches and cond is False:
+                    matches.remove(info[0])
+                count += 1
     return matches
 
 
@@ -95,18 +92,29 @@ def subfolder(matches, folder, query):
     return playbill_search.make_folder(matches, folder, query)
 
 
-# Create Textfile with results
-def results_file(folder, full):
-    file = "results.txt"
+def get_path(folder, file):
     path = "{}/{}".format(folder, file)
     if os.path.isfile(path):
         file = "results{}.txt".format(playbill_search.get_date())
         path = "{}/{}".format(folder, file)
-    with open(path, "a") as file:
-        for i in full:
-            if full[i] is not False:
-                for k in range(len(full[i][0])):
-                    file.write(full[i][0][k])
+    return path
+
+
+def csv_file(folder, full):
+    path = get_path(folder, "results.csv")
+    data = ocr_search_out.csv_writer(full)
+    csv_dict_writer.run_csv_writer(data, path)
+
+
+# Create Textfile with results
+def results_file(folder, full):
+    path = get_path(folder, "results.txt")
+    # with open(path, "a") as file:
+    for i in full:
+        if full[i] is not False:
+            for j in range(len(full[i])):
+                with open(path, "a", encoding="utf-8") as file:
+                    file.write(ocr_search.format_results(full[i][j]))
 
 
 def main():
@@ -119,17 +127,20 @@ def main():
     files = []
     files = playbill_search.file_reader(folder, files)
     full = ocr_search_out.out(files)
-    full = ocr_search_out.out_master(full)
-    matches = parse(full)
     if sys.argv[1] == "1":
+        matches = parse(full)
         filter(matches, folder)
         results_file(folder, full)
+        csv_file(folder, full)
     elif sys.argv[1] == "2":
+        matches = parse(full)
         folder = subfolder(
             matches, folder, "Search_{}".format(playbill_search.get_date()))
         results_file(folder, full)
+        csv_file(folder, full)
     else:
-        results_file(folder, full)
+        # results_file(folder, full)
+        csv_file(folder, full)
 
 
 if __name__ == "__main__":
