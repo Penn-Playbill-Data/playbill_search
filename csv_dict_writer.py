@@ -17,5 +17,4 @@ def run_csv_writer(data, path):
         if values != data[0]:
             inner_dict = dict(zip(fieldnames, values))
             my_list.append(inner_dict)
-            print (my_list)
             csv_dict_writer(path, fieldnames, my_list)

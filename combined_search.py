@@ -139,7 +139,7 @@ def main():
         results_file(folder, full)
         csv_file(folder, full)
     else:
-        # results_file(folder, full)
+        results_file(folder, full)
         csv_file(folder, full)
 
 
