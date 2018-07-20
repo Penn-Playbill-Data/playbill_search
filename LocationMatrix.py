@@ -106,6 +106,8 @@ class LocationMatrix(object):
             return indices
 
     def get_line(self, index):
+        if index >= self.words:
+            index = self.words - 1
         val = self.values[index]
         return " ".join(self.matrix[val[0]])
 
@@ -213,6 +215,8 @@ class LocationMatrix(object):
         return False
 
     def split(self, index):
+        if index >= self.words:
+            index = self.words - 1
         val = self.values[index]
         last_low = self.matrix[val[0]]
         last_low = [last_low[:val[1]]]

@@ -258,6 +258,7 @@ def location_search(anchor, context, index, percent, matrix):
                 # trim matrix to before or after anchor (+ percent = aft,
                 # - = bef)
                 matrix.trim_matrix(index, words)
+                matrix.update_matrix()
                 # Get results for after ancher
                 if percent > 0:
                     results = get_bools(matrix, context, 1)

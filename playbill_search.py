@@ -12,7 +12,6 @@
 import os
 from shutil import copy
 import re
-from distutils.dir_util import mkpath
 from datetime import datetime
 
 
@@ -69,12 +68,16 @@ def get_date():
 
 
 def make_folder(matches, path, query):
+    if " " in query:
+        query = query.split()
+        query = query.join("_")
     folder = path + "/" + query
     # Does this folder already exist? If so, add the current date/time
     # to provide a unique / helpful new name
     if os.path.isdir(folder):
         folder = folder + get_date()
-    mkpath(folder)
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
     for file in matches:
         copy(file, folder)
     return folder

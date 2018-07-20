@@ -12,7 +12,7 @@ def check_here(cond, loc):
 
 
 def set_cond():
-    test = input("Search True Y/N?: ")
+    test = input("Search results that match criteria Y/N?: ")
     return test == "Y" or test == "y"
 
 
@@ -89,7 +89,10 @@ def filter(matches, folder):
 
 # Create subfolders
 def subfolder(matches, folder, query):
-    return playbill_search.make_folder(matches, folder, query)
+    if matches != []:
+        return playbill_search.make_folder(matches, folder, query)
+    else:
+        return folder
 
 
 def get_path(folder, file):
