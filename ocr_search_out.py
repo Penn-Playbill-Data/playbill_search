@@ -124,25 +124,3 @@ Window Size,Starting Index,Percent,Line".split(",")]
                     results[8], results[9], results[10])
                 data.append(str.split(","))
     return data
-
-
-# def out_master(full):
-#     for i in full:
-#         sum = []
-#         results = {}
-#         if full[i] is not False:
-#             for j in range(len(full[i])):
-#                 info = full[i][j]
-#                 file = info[0][len(info[0]) - 1]
-#                 sum.append(ocr_search.print_results(
-#                     i + " Results", info))
-#                 for k in range(len(full[i][j])):
-#                     info = full[i][j][k]
-#                     if info is not False:
-#                         if k >= 2:
-#                             if file in results:
-#                                 results[file].append(info)
-#                             else:
-#                                 results[file] = [info]
-#             full[i] = [sum, results]
-#     return full

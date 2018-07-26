@@ -104,7 +104,7 @@ def search(query, directory):
         with open(filename, "r", encoding="utf-8") as my_file:
             # Loop through each line
             for i, line in enumerate(my_file):
-                # Splitting up the line into words, saving to an array
+                # Splitting up the line into words, saving to a list
                 line_text = line.lower()
                 if key_check(key, line_text):
                     matches.append(filename)

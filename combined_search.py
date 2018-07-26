@@ -62,18 +62,18 @@ def parse(full):
             count = 0
             for j in range(len(full[i])):
                 info = full[i][j]
-                if file != info[0]:
+                if file != info[1]:
                     count = 0
-                file = info[0]
+                file = info[1]
                 loc = [info[2], info[3], info[4]]
                 res = check_bools(bools[0], bools[1], loc)
                 cond = res[1]
                 check = res[0]
-                if check and info[0] not in matches:
+                if check and info[1] not in matches:
                     if cond is True or count == 0:
-                        matches.append(info[0])
-                elif not check and info[0] in matches and cond is False:
-                    matches.remove(info[0])
+                        matches.append(info[1])
+                elif not check and info[1] in matches and cond is False:
+                    matches.remove(info[1])
                 count += 1
     return matches
 
