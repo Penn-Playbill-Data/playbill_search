@@ -95,23 +95,23 @@ def subfolder(matches, folder, query):
         return folder
 
 
-def get_path(folder, file):
-    path = "{}/{}".format(folder, file)
+def get_path(folder, ext):
+    path = "{}/results.{}".format(folder, ext)
     if os.path.isfile(path):
-        file = "results{}.txt".format(playbill_search.get_date())
+        file = "results{}.{}".format(playbill_search.get_date(), ext)
         path = "{}/{}".format(folder, file)
     return path
 
 
 def csv_file(folder, full):
-    path = get_path(folder, "results.csv")
+    path = get_path(folder, "csv")
     data = ocr_search_out.csv_writer(full)
     csv_dict_writer.run_csv_writer(data, path)
 
 
 # Create Textfile with results
 def results_file(folder, full):
-    path = get_path(folder, "results.txt")
+    path = get_path(folder, "txt")
     # with open(path, "a") as file:
     for i in full:
         if full[i] is not False:
