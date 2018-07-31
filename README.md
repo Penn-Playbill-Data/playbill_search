@@ -109,10 +109,9 @@ as the parameters particular to the test run.
 ## Combined Search
 #### Running
 Open Terminal, enter `python3 combined_search.py [option]`. See above note
-about pathnames. In place of [option], enter 1 to filter files based on results
-(see **CAUTION** under filter below), 2 to create a subfolder holding copies of
-the resulting files, or any other value to simply create a csv file containing
-the results in the folder to be searched.
+about pathnames. In place of [option], enter 1 to filter files based on results,
+2 to create a subfolder holding copies of the resulting files, or any other
+value to simply create a csv file containing the results in the folder to be searched.
 
 Prompts will ask the user whether they would like to use playbill_search. Entering
 Y or y will run the program before proceeding, using the resulting folder for the
@@ -128,11 +127,9 @@ after the anchor). The matches will then be collected, and the function specifie
 in [option] will be performed.
 
 ##### Filter
-**WARNING** Using this function will completely delete ANY files that do not
-match the criteria specified in the criteria specified by the prompts above.
-**DO NOT** use on OCR_TEXT folder or Theater folders! It is highly recommended
-to use the subfolder function *before* using the filter function. No additional
-prompts are necessary. A csv results file will be created in the folder.
+This function will separate any files that do not match the search criteria and
+move them into a separate folder within the folder to be searched, named
+"Extras_[date/time]". A csv results file will be created in the folder.
 
 
 ##### Subfolder
