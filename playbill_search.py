@@ -83,6 +83,24 @@ def make_folder(matches, path, query):
     return folder
 
 
+def sort_folder(matches, path, query):
+    if " " in query:
+        query = query.split()
+        query = query.join("_")
+    folder = path + "/" + query
+    # Does this folder already exist? If so, add the current date/time
+    # to provide a unique / helpful new name
+    if os.path.isdir(folder):
+        folder = folder + get_date()
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+    for file in matches:
+        f = os.path.basename(file)
+        p = "{}/{}".format(folder, f)
+        os.rename(file, p)
+    return folder
+
+
 # Creating the main function - takes in the word(s) to be found and the folder
 # path
 def search(query, directory):

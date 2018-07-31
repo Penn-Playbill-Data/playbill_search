@@ -80,11 +80,16 @@ def parse(full):
 
 # Filter Results
 def filter(matches, folder):
+    nope = []
+    date = playbill_search.get_date()
     if matches != []:
         paths = glob.glob(os.path.join(folder, "*.txt"))
         for file in paths:
             if file not in matches:
-                os.remove(file)
+                nope.append(file)
+        if nope != []:
+            playbill_search.sort_folder(
+                nope, folder, "Extras_{}".format(date))
 
 
 # Create subfolders
