@@ -110,8 +110,9 @@ as the parameters particular to the test run.
 #### Running
 Open Terminal, enter `python3 combined_search.py [option]`. See above note
 about pathnames. In place of [option], enter 1 to filter files based on results,
-2 to create a subfolder holding copies of the resulting files, or any other
-value to simply create a csv file containing the results in the folder to be searched.
+2 to create a subfolder holding copies of the resulting files, 3 to run the
+subfolder function and choose where to move the results, or any other value
+to simply create a csv file containing the results in the folder to be searched.
 
 Prompts will ask the user whether they would like to use playbill_search. Entering
 Y or y will run the program before proceeding, using the resulting folder for the
@@ -136,7 +137,9 @@ move them into a separate folder within the folder to be searched, named
 This option will make a copy of all matching files and sort them into a subfolder
 within the search folder. This folder will  be named "search [date/time]", and
 will include a csv results file. Highly recommended to use this function, and then
-to use the filter function on the subfolder if so desired.
+to use the filter function on the subfolder if so desired. Entering 3 as the
+option will allow you to choose where the subfolder will be located (great for
+large sized searches).
 
 
 ##### Results
@@ -169,6 +172,7 @@ to other projects.
 
 ## Installation
 Download Folder.
+In Terminal, enter `pip3 install requests`
 
 ## Authors
 Anastasia Hutnick

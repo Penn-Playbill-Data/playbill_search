@@ -2,7 +2,6 @@ import ocr_search_out
 import ocr_search
 import csv_dict_writer
 import playbill_search
-import glob
 import os
 import sys
 
@@ -83,7 +82,8 @@ def filter(matches, folder):
     nope = []
     date = playbill_search.get_date()
     if matches != []:
-        paths = glob.glob(os.path.join(folder, "*.txt"))
+        paths = []
+        paths = playbill_search.file_reader(folder, paths)
         for file in paths:
             if file not in matches:
                 nope.append(file)
@@ -138,16 +138,23 @@ def main():
     if sys.argv[1] == "1":
         matches = parse(full)
         filter(matches, folder)
-        results_file(folder, full)
+        # results_file(folder, full)
         csv_file(folder, full)
     elif sys.argv[1] == "2":
         matches = parse(full)
         folder = subfolder(
             matches, folder, "Search_{}".format(playbill_search.get_date()))
-        results_file(folder, full)
+        # results_file(folder, full)
         csv_file(folder, full)
+    elif sys.argv[1] == "3":
+        matches = parse(full)
+        loc = input("Please input where you'd like to store the matches: ")
+        loc = subfolder(
+            matches, loc, "Search_{}".format(playbill_search.get_date()))
+        # results_file(loc, full)
+        csv_file(loc, full)
     else:
-        results_file(folder, full)
+        # results_file(folder, full)
         csv_file(folder, full)
 
 
